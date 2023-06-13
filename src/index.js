@@ -4,20 +4,20 @@ const path = require('path')
 
 const express = require('express');
 const cors = require('cors');
-const object_catalogue = require('./src/database/schemas/object.js');
-const pricelist = require('./src/database/schemas/pricelist.js');
-const object = require('./src/routes/object.js');
-const image = require('./src/routes/image.js');
-const pricelistRoute = require('./src/routes/pricelist.js');
-const reservationRoute = require('./src/routes/reservations.js');
-const customers = require('./src/routes/customer.js');
-const reservation = require('./src/database/schemas/reservation.js');
-const customer = require('./src/database/schemas/customer.js');
-const Image = require('./src/database/schemas/images.js');
+const object_catalogue = require('./database/schemas/object.js');
+const pricelist = require('./database/schemas/pricelist.js');
+const object = require('./routes/object.js');
+const image = require('./routes/image.js');
+const pricelistRoute = require('./routes/pricelist.js');
+const reservationRoute = require('./routes/reservations.js');
+const customers = require('./routes/customer.js');
+const reservation = require('./database/schemas/reservation.js');
+const customer = require('./database/schemas/customer.js');
+const Image = require('./database/schemas/images.js');
 
 var fs = require('fs'), request = require('request');
 
-require('./src/database/connection');
+require('./database/connection.js');
 // require('dotenv').config({ path: __dirname + '/.env' })
 
 
