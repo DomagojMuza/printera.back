@@ -106,19 +106,6 @@ app.listen(port, () => {
 const { uniqueNamesGenerator, adjectives, colors, animals, names } = require('unique-names-generator');
 
 
-la = async function () {
-	let res = await reservation.find();
-	res.forEach(async obj => {
-		con.query('select * from reservation_items ri where itemDefinitionId = 1 and reservationId =' + obj.reservationId, async function (err, result, fields) {
-			let dateFrom = new Date(result[0].dateFrom.toISOString().split('T')[0]);
-			let dateTo = new Date(result[0].dateTo.toISOString().split('T')[0]);
-
-			obj.dateFrom = dateFrom;
-			obj.dateTo = dateTo;
-			await obj.save();
-		})
-	})
-}
 
 
 //la();
