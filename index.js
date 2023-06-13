@@ -263,3 +263,5 @@ la = async function () {
 // 			})
 // 	})
 // });
+
+export default app;
