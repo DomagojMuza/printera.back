@@ -4,7 +4,7 @@ const User = require('../database/schemas/user')
 const auth = async (req, res, next) =>{
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+    const decoded = jwt.verify(token, 'webappprojekt');
       const user = await User.findOne({_id: decoded._id})
       if (user)
       {
@@ -14,15 +14,11 @@ const auth = async (req, res, next) =>{
       }
       else 
       {
-        req.token = null
-        req.user = null
-        next()
+        res.status(401).send('Access forbidden');
       }
     } catch (e) 
     {
-      req.token = null
-      req.user = null
-      next()
+      res.status(401).send('Access forbidden');
     }
 }
 

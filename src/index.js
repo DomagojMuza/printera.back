@@ -10,6 +10,7 @@ const object = require('./routes/object.js');
 const image = require('./routes/image.js');
 const pricelistRoute = require('./routes/pricelist.js');
 const reservationRoute = require('./routes/reservations.js');
+const user = require('./routes/user.js');
 const customers = require('./routes/customer.js');
 const reservation = require('./database/schemas/reservation.js');
 const customer = require('./database/schemas/customer.js');
@@ -34,6 +35,7 @@ app.use(pricelistRoute)
 app.use(image)
 app.use(customers)
 app.use(reservationRoute)
+app.use(user)
 
 var con = mysql.createConnection({
 	host: "localhost",
@@ -251,4 +253,4 @@ const { uniqueNamesGenerator, adjectives, colors, animals, names } = require('un
 // 	})
 // });
 
-export default app;
+module.exports = app;

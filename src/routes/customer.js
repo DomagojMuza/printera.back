@@ -1,6 +1,7 @@
 const express = require('express')
 const Customer = require('../database/schemas/customer.js')
 const mongoose = require("mongoose");
+const auth = require('../auth/auth')
 
 // const jwt = require('jsonwebtoken');
 // const auth = require('../auth/auth.js');
@@ -10,7 +11,7 @@ const UserRoute = new express.Router()
 
 
 // write route /api/customers/:id to patch user 
-UserRoute.patch('/api/customers', async (req, res) => {
+UserRoute.patch('/api/customers', auth, async (req, res) => {
     const _id = req.body._id;
     const notAllowed = ['_id', 'createdAt', 'updatedAt', '__v', 'image'];
     try {
@@ -35,7 +36,7 @@ UserRoute.patch('/api/customers', async (req, res) => {
 
 })
 
-UserRoute.post('/api/customers', async (req, res) => {
+UserRoute.post('/api/customers', auth, async (req, res) => {
     try {
         let customerId = await Customer.findNextCustomerId();
         req.body.customerId = customerId;
@@ -61,7 +62,7 @@ UserRoute.delete('/api/customers/:id', async (req, res) => {
 
 /// Get all customers with skip and limit
 
-UserRoute.get('/api/customers', async (req, res) => {
+UserRoute.get('/api/customers', auth, async (req, res) => {
     try {
         let search = { $and: [] };
         let skip = 0;

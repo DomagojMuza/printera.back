@@ -9,7 +9,7 @@ const auth = require('../auth/auth.js');
 
 const object = new express.Router()
 
-object.post('/api/object', async (req, res) => {
+object.post('/api/object', auth, async (req, res) => {
     try {
         let object_id = await Object_catalogue.findNextObjectId();
         req.body.object_id = object_id;
@@ -28,7 +28,7 @@ object.post('/api/object', async (req, res) => {
 
 })
 
-object.patch('/api/object', async (req, res) => {
+object.patch('/api/object', auth, async (req, res) => {
     const _id = req.body._id;
     const notAllowed = ['_id', 'createdAt', 'updatedAt', '__v', 'image'];
     try {
@@ -61,7 +61,7 @@ object.patch('/api/object', async (req, res) => {
 
 })
 
-object.get('/api/object', async (req, res) => {
+object.get('/api/object', auth, async (req, res) => {
     let search = { $and: [{ isDeleted: 'No'}] };
     let limit = +req.query.limit || 10;
     let skip = 0;
@@ -158,7 +158,7 @@ object.get('/api/object', async (req, res) => {
     }
 })
 
-object.get('/api/object/:id', async (req, res) => {
+object.get('/api/object/:id', auth, async (req, res) => {
     const _id = req.params.id;
     try {
         let object = await Objects.findOne({

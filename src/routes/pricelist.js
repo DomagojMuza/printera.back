@@ -2,12 +2,12 @@ const express = require('express')
 const Pricelist = require('../database/schemas/pricelist.js')
 const Objects = require('../database/schemas/object.js')
 const object_catalogue = require('../database/schemas/object.js')
-
+const auth = require('../auth/auth')
 
 const pricelist = new express.Router()
 
 
-pricelist.get('/api/pricelist/:id', async (req, res) => {
+pricelist.get('/api/pricelist/:id', auth, async (req, res) => {
       try {
             let items = await Pricelist.aggregate([
                   {
@@ -31,7 +31,7 @@ pricelist.get('/api/pricelist/:id', async (req, res) => {
 
 
 
-pricelist.post('/api/pricelist', async (req, res) => {
+pricelist.post('/api/pricelist', auth, async (req, res) => {
       try {
             if (!(req.body.dateFrom && req.body.dateTo)) throw "Dates missing";
             if (new Date(req.body.dateFrom) > new Date(req.body.dateTo)) throw "Ending date smaller that starting date";
@@ -64,7 +64,7 @@ pricelist.post('/api/pricelist', async (req, res) => {
 
 })
 
-pricelist.patch('/api/pricelist', async (req, res) => {
+pricelist.patch('/api/pricelist', auth, async (req, res) => {
       const notAllowed = ['_id', 'object_id', 'createdAt', 'updatedAt', '_v'];
       try {
             req.body.dateFrom = new Date(req.body.dateFrom);
@@ -95,7 +95,7 @@ pricelist.patch('/api/pricelist', async (req, res) => {
 
 })
 
-pricelist.delete('/api/pricelist/:id', async (req, res) => {
+pricelist.delete('/api/pricelist/:id', auth, async (req, res) => {
       const _id = req.params.id;
       try {
             const item = await Pricelist.findOneAndDelete({ _id })
@@ -109,7 +109,7 @@ pricelist.delete('/api/pricelist/:id', async (req, res) => {
       }
 })
 
-pricelist.post('/api/calculator', async (req, res) => {
+pricelist.post('/api/calculator', auth, async (req, res) => {
       let params = req.body;
       try {
             if (!(params.object_id && params.dateFrom && params.dateTo)) return res.status(400).send("All parameters not sent");
@@ -200,12 +200,6 @@ function calcDays(range) {
       return diff < 1 ? 1 : diff;
 }
 
-
-pricelist.get('/test', async (req, res) => {
-      let merge = rangesUnion({ dateFrom: '2022-11-01', dateTo: '2022-11-15' }, { dateFrom: '2022-11-10', dateTo: '2022-11-12' });
-      let diff = diffInDays(merge.dateFrom, merge.dateTo);
-      res.status(200).send({ merge, diff });
-})
 
 function diffInDays(dateFrom, dateTo) {
       dateFrom = new Date(dateFrom);

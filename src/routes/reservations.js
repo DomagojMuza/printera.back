@@ -1,16 +1,14 @@
 const express = require('express')
 const Reservation = require('../database/schemas/reservation.js')
 const mongoose = require("mongoose");
-
-// const jwt = require('jsonwebtoken');
-// const auth = require('../auth/auth.js');
+const auth = require('../auth/auth')
 
 
 const ReservationRoute = new express.Router()
 
 
 // write route /api/reservation/:id to patch user 
-ReservationRoute.patch('/api/reservation', async (req, res) => {
+ReservationRoute.patch('/api/reservation', auth, async (req, res) => {
     const _id = req.body._id;
     const notAllowed = ['_id', 'createdAt', 'updatedAt', '__v', 'image'];
     try {
@@ -35,7 +33,7 @@ ReservationRoute.patch('/api/reservation', async (req, res) => {
 
 })
 
-ReservationRoute.post('/api/reservation', async (req, res) => {
+ReservationRoute.post('/api/reservation', auth, async (req, res) => {
     try {
         let res_id = await Reservation.findNextReservationId();
         req.body.reservationId = res_id;
@@ -50,7 +48,7 @@ ReservationRoute.post('/api/reservation', async (req, res) => {
     }
 })
 
-ReservationRoute.delete('/api/reservation/:id', async (req, res) => {
+ReservationRoute.delete('/api/reservation/:id', auth, async (req, res) => {
     try {
         const user = await Reservation.findByIdAndDelete({_id: req.params.id})
 
@@ -64,7 +62,7 @@ ReservationRoute.delete('/api/reservation/:id', async (req, res) => {
 
 /// Get all customers with skip and limit
 
-ReservationRoute.get('/api/reservation', async (req, res) => {
+ReservationRoute.get('/api/reservation', auth, async (req, res) => {
     try {
         let search = { $and: [] };
         let skip = 0;
