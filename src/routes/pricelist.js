@@ -136,7 +136,7 @@ async function hasItemInPeriod(object_id, dateFrom, dateTo, exclude = null) {
                   },
                   {
                         $and: [
-                              { dateFrom: { $lte: dateTo } },
+                              { dateFrom: { $lt: dateTo } },
                               { dateTo: { $gte: dateTo } }
                         ]
                   },
