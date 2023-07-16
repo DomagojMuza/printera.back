@@ -28,14 +28,13 @@ require('./database/connection.js');
 const app = express();
 app.use(cors())
 app.use(express.json())
-console.log(path.join(__dirname, 'data/images'));
 app.use('/uploads', express.static(path.join(__dirname, 'data')))
 app.use(object)
 app.use(pricelistRoute)
 app.use(image)
 app.use(customers)
 app.use(reservationRoute)
-// app.use(user)
+app.use(user)
 
 var con = mysql.createConnection({
 	host: "localhost",
