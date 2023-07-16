@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
         lowercase: true,
         validate(val){
             if(!validator.isEmail(val)){
-                throw new Error('Invalid email')
+                throw new Error('Krivi email')
             }
         }
     },
@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
         minlength: [8, 'Password too short'],
         validate(val){
             if(val.toLowerCase().includes('password')){
-                throw new Error("Your password cannot conatain 'password'")
+                throw new Error("Nedozovljena lozinka")
             }
         }
     },
@@ -50,11 +50,11 @@ UserSchema.statics.findUser = async (email, password) =>
 {
     const user = await User.findOne({email})
     if(!user){
-        throw new Error('Unable to login')
+        throw new Error('Podaci netočni')
     }
     const match = await bcrypt.compare(password, user.password)
     if(!match){
-        throw new Error('Unable to login')
+        throw new Error('Podaci netočni')
     }
     return user
 }
@@ -70,7 +70,7 @@ UserSchema.pre('save', async function(next){
 
 UserSchema.post('save', function (error, doc, next) {
     if (error.code === 11000) 
-        next(new Error('User with this email already exists'));
+        next(new Error('Korisnik već postoji'));
     else next(error);
 });
 

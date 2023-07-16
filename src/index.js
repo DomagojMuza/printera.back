@@ -35,7 +35,7 @@ app.use(pricelistRoute)
 app.use(image)
 app.use(customers)
 app.use(reservationRoute)
-app.use(user)
+// app.use(user)
 
 var con = mysql.createConnection({
 	host: "localhost",

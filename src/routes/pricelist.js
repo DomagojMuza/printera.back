@@ -72,7 +72,7 @@ pricelist.patch('/api/pricelist', auth, async (req, res) => {
             
             let oPricelist = await hasItemInPeriod(req.body.object_id, req.body.dateFrom, req.body.dateTo, req.body._id);
 
-            if (oPricelist) throw 'There is pricelist item in that period';
+            if (oPricelist) throw Error('There is pricelist item in that period');
 
             let updates = Object.keys(req.body)
             updates = updates.filter(el => {
@@ -89,8 +89,7 @@ pricelist.patch('/api/pricelist', auth, async (req, res) => {
             res.status(200).send(item)
 
       } catch (error) {
-            console.log(error);
-            res.status(400).send(error)
+            res.status(400).send({ error: error.message})
       }
 
 })
@@ -112,10 +111,10 @@ pricelist.delete('/api/pricelist/:id', auth, async (req, res) => {
 pricelist.post('/api/calculator', auth, async (req, res) => {
       let params = req.body;
       try {
-            if (!(params.object_id && params.dateFrom && params.dateTo)) return res.status(400).send("All parameters not sent");
+            if (!(params.object_id && params.dateFrom && params.dateTo)) return res.status(400).send("Greška prilikom izračuna cijene.");
 
             let itemList = await hasItemInPeriod(params.object_id, params.dateFrom, params.dateTo);
-            if (!(itemList && itemList.length > 0)) return res.status(404).send("No pricelist items found");
+            if (!(itemList && itemList.length > 0)) return res.status(404).send("Nisu pronađene stavke za traženi period.");
             let calc = calculator(itemList, params.dateFrom, params.dateTo);
             return res.status(200).send(calc);
       } catch (error) {
